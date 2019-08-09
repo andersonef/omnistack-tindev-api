@@ -1,26 +1,45 @@
-const axios = require('axios');
-const Dev = require('../models/Dev');
+const DevService = require('../services/DevService');
 
 module.exports = {
-    async store(request, response) {
 
-        const { username } = request.body;
+    async index(request, response) {
+        try {
+            const devList = await DevService.getDevsForList(request.headers.user).catch(e => {
+                console.log('Erro ao gerar a lista: ', e);
+                throw e;
+            });
 
-        const userExists = await Dev.findOne({ user: username });
-        if (userExists) {
-            return response.json(userExists);
+            return response.json({
+                status: 'success',
+                data: devList
+            });
+        } catch (err) {
+            return response
+            .status(400)
+            .json({
+                status: 'error',
+                message: err
+            });
         }
+    },
 
-        const githubResponse = await axios.get('https://api.github.com/users/' + username);
-        const {name, bio, avatar_url: avatar} = githubResponse.data;
-    
-        const dev = await Dev.create({
-            name,
-            user: username,
-            bio,
-            avatar
-        });
-
-        return response.json(dev);
+    async store(request, response) {
+        try {
+            const newDev = await DevService.importDevFromGithub(request.body.username).catch(e => {
+                console.log('deu erro: ', e);
+                throw e;
+            });
+            return response.json({
+                status: 'success',
+                data: newDev
+            });
+        } catch(err) {
+            return response
+            .status(400)
+            .json({
+                status: 'error',
+                message: err
+            });
+        }
     }
 }

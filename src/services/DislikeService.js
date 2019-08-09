@@ -4,33 +4,32 @@ module.exports = {
     loggedDev: null,
     targetDev: null,
 
-    async createLike(loggedDevId, targetDevId) {
+    async createDislike(loggedDevId, targetDevId) {
         
         await this.readDevsFromDatabase(loggedDevId, targetDevId);
         
         this.validateInput();
 
         try {
-            this.verifyMatch();
-            this.loggedDev.likes.push(this.targetDev._id);
+            this.loggedDev.dislikes.push(this.targetDev._id);
             await this.loggedDev.save();
             return this.loggedDev;
         } catch (err) {
-            console.log('An error ocour when user tried to like another one. Details: ', err);
+            console.log('An error ocour when user tried to dislike another one. Details: ', err);
             throw "Ops! The operation could not be complete! Sorry!";
         }
 
     },
 
     verifyMatch() {
-        if (this.targetDev.likes.includes(this.loggedDev._id)) {
+        if (this.targetDev.dislikes.includes(this.loggedDev._id)) {
             // TODO: Is it a match? yes... 
         }
     },
 
     validateInput() {
-        if (this.loggedDev._id == this.targetDev._id) throw "You can't like yourself!";
-        if (this.loggedDev.likes.includes(this.targetDev._id)) throw "You already liked this dev.";
+        if (this.loggedDev._id == this.targetDev._id) throw "You can't dislike yourself!";
+        if (this.loggedDev.dislikes.includes(this.targetDev._id)) throw "You already disliked this dev.";
     },
 
     async readDevsFromDatabase(loggedDevId, targetDevId) {

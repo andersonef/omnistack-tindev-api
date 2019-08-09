@@ -1,10 +1,10 @@
 const Dev = require('../models/Dev');
-const likeService = require('../services/LikeService');
+const dislikeService = require('../services/DislikeService');
 
 module.exports = {
     async store(request, response) {
         try {
-            const dev = await likeService.createLike(request.headers.user, request.params.devId);
+            const dev = await dislikeService.createDislike(request.headers.user, request.params.devId);
             return response
             .json({
                 status: 'success',
