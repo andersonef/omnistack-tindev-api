@@ -1,10 +1,13 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const routes = require('./routes');
 const mongoose = require('mongoose');
 
+
+dotenv.config();
 const server = express();
 
-mongoose.connect('mongodb+srv://developer:cachorro@andersonsilvadevprojects-8dwgd.mongodb.net/tindev?retryWrites=true&w=majority', {
+mongoose.connect(process.env.DB_CONNECTION_STRING, {
     useNewUrlParser: true
 });
 
