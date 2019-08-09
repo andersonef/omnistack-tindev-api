@@ -1,0 +1,21 @@
+{
+  "name": "TindevApi",
+  "version": "1.0.0",
+  "description": "API for tindev app - Omnistack week - day 1",
+  "main": "index.js",
+  "repository": "http://github.com/andersonef/tindev-api",
+  "author": "Anderson N. Silva <anderson.nuneseth@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.9"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
