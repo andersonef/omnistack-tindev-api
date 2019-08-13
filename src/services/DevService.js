@@ -3,13 +3,19 @@ const Dev = require('../models/Dev');
 
 module.exports = {
     async importDevFromGithub(username) {
-        const userExists = await Dev.findOne({ user: username });
-        if (userExists) {
-            return userExists;
-        }
+        
 
         const githubResponse = await axios.get('https://api.github.com/users/' + username);
         const {name, bio, avatar_url: avatar} = githubResponse.data;
+        const userExists = await Dev.findOne({ user: username });
+        if (userExists) {
+            userExists.update({
+                name,
+                bio,
+                avatar
+            });
+            return userExists;
+        }
     
         const dev = await Dev.create({
             name,
